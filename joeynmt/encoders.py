@@ -216,10 +216,11 @@ class TransformerEncoder(Encoder):
         """
         x = self.pe(embed_src)  # add position encoding to word embeddings
         x = self.emb_dropout(x)
+        x = self.layer_norm(x)  # Prenorm Layer
 
         for layer in self.layers:
             x = layer(x, mask)
-        return self.layer_norm(x), None
+        return x, None
 
     def __repr__(self):
         return f"{self.__class__.__name__}(num_layers={len(self.layers)}, " \
